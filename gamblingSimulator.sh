@@ -2,23 +2,23 @@
 echo "Welcome to Gambling Simulator"
 stakePerDay=100
 betPerGame=1
-daysPlayed=0
+daysPlayed=1
 total=0
 
-while (( $daysPlayed < 20 ))
+while (( $daysPlayed <= 20 ))
 do
 	stakePerDay=100
 	while (( $stakePerDay > 50 && $stakePerDay < 150 ))
 	do
- 	flip=$(( RANDOM % 2 ))
- 	if [ $flip -eq 1 ]
- 	then
-        stakePerDay=$(( $stakePerDay + $betPerGame ))
- 	else
-        stakePerDay=$(( $stakePerDay - $betPerGame ))
- 	fi
+ 		flip=$(( RANDOM % 2 ))
+ 		if [ $flip -eq 1 ]
+ 		then
+        		stakePerDay=$(( $stakePerDay + $betPerGame ))
+ 		else
+        		stakePerDay=$(( $stakePerDay - $betPerGame ))
+ 		fi
 	done
-   total=$(( $total + $stakePerDay ))
+	total=$(( $total + $stakePerDay ))
 	daysPlayed=$(( $daysPlayed + 1 ))
 done
 
