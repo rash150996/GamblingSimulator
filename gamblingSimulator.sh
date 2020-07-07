@@ -4,11 +4,16 @@ stakePerDay=100
 betPerGame=1
 daysPlayed=1
 total=0
+totalDays=20
+totalStake=$(( $stakePerDay * $totalDays ))
+lowerStake=$(( $stakePerDay/2  ))
+upperStake=$(( $stakePerDay + $lowerStake ))
 
-while (( $daysPlayed <= 20 ))
+
+while (( $daysPlayed <= $totalDays ))
 do
 	stakePerDay=100
-	while (( $stakePerDay > 50 && $stakePerDay < 150 ))
+	while (( $stakePerDay > $lowerStake && $stakePerDay < $upperStake ))
 	do
  		flip=$(( RANDOM % 2 ))
  		if [ $flip -eq 1 ]
@@ -22,9 +27,9 @@ do
 	daysPlayed=$(( $daysPlayed + 1 ))
 done
 
-if [ $total > 2000 ]
+if [ $total -ge $totalStake ]
 then
-	echo "you are left with \$$total on the winning side"
+	echo "you are left with \$$total on the winning side, after $totalDays days"
 else
-	echo "you are left with \$$total on the losing side"
+	echo "you are left with \$$total on the losing side, after $totalDays days"
 fi
