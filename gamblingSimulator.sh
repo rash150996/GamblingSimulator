@@ -6,8 +6,11 @@ total=0
 totalDays=10
 newStake=0
 stakePerDay=0
-lowerStake=$(( $newStake/2 ))
-upperStake=$(( $newStake+ $lowerStake ))
+maxLost=0
+maxWon=0
+dayWon=0
+dayLost=0
+
 
 function trial()
 {
@@ -31,15 +34,26 @@ do
 	done
 	if [ $newStake -eq $upperStake ]
 	then
-		echo "Day $daysPlayed you have won by $lowerStake"
+		#echo "Day $daysPlayed you have won by $lowerStake"
+		if [ $lowerStake -gt $maxWon ]
+		then
+			maxWon=$lowerStake
+			dayWon=$daysPlayed
+		fi
 	else
-		echo "Day $daysPlayed you have lost by $lowerStake"
+		#echo "Day $daysPlayed you have lost by $lowerStake"
+		if [ $lowerStake -gt $maxLost ]
+		then
+			maxLost=$lowerStake
+			dayLost=$daysPlayed
+		fi
+
 	fi
 	daysPlayed=$(( $daysPlayed + 1 ))
 done
+printf "Day $dayWon is your luckiest day as you won $maxWon\nDay $dayLost is your unluckiest day as you lost $maxLost\n"
+
 }
 
-echo "Daily Analysis of win-lose for this month"
-echo "-----------------------------------------"
 trial
 
