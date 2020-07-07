@@ -1,35 +1,45 @@
 #!/bin/bash
-echo "Welcome to Gambling Simulator"
-stakePerDay=100
+STAKE_PER_DAY=100
 betPerGame=1
 daysPlayed=1
 total=0
-totalDays=20
-totalStake=$(( $stakePerDay * $totalDays ))
-lowerStake=$(( $stakePerDay/2  ))
-upperStake=$(( $stakePerDay + $lowerStake ))
+totalDays=10
+newStake=0
+stakePerDay=0
+lowerStake=$(( $newStake/2 ))
+upperStake=$(( $newStake+ $lowerStake ))
 
-
+function trial()
+{
 while (( $daysPlayed <= $totalDays ))
 do
-	stakePerDay=100
-	while (( $stakePerDay > $lowerStake && $stakePerDay < $upperStake ))
+	newStake=$(( $STAKE_PER_DAY + $stakePerDay ))
+	lowerStake=$(( $newStake/2 ))
+	upperStake=$(( $newStake+ $lowerStake ))
+
+	while (( $newStake > $lowerStake && $newStake < $upperStake ))
 	do
  		flip=$(( RANDOM % 2 ))
  		if [ $flip -eq 1 ]
  		then
-        		stakePerDay=$(( $stakePerDay + $betPerGame ))
+        		newStake=$(( $newStake + $betPerGame ))
+			stakePerDay=$newStake
  		else
-        		stakePerDay=$(( $stakePerDay - $betPerGame ))
+        		newStake=$(( $newStake - $betPerGame ))
+			stakePerDay=$newStake
  		fi
 	done
-	total=$(( $total + $stakePerDay ))
+	if [ $newStake -eq $upperStake ]
+	then
+		echo "Day $daysPlayed you have won by $lowerStake"
+	else
+		echo "Day $daysPlayed you have lost by $lowerStake"
+	fi
 	daysPlayed=$(( $daysPlayed + 1 ))
 done
+}
 
-if [ $total -ge $totalStake ]
-then
-	echo "you are left with \$$total on the winning side, after $totalDays days"
-else
-	echo "you are left with \$$total on the losing side, after $totalDays days"
-fi
+echo "Daily Analysis of win-lose for this month"
+echo "-----------------------------------------"
+trial
+
